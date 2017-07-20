@@ -1,0 +1,140 @@
+﻿ALTER TABLE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Comment ADD
+	FileAttachment nvarchar(500) NULL
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_CommentAdd
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_CommentAdd
+	@FeedbackID int,
+	@UserID int,
+	@CreateDate datetime,
+	@Comment ntext,
+	@AnonymousName nvarchar(255),
+	@AnonymousEmail nvarchar(255),
+	@AnonymousUrl nvarchar(255),
+	@IsApproved bit,
+	@FileAttachment nvarchar(500)   
+AS
+
+INSERT INTO {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Comment (
+	[FeedbackID],
+	[UserID],
+	[CreateDate],
+	[Comment],
+	[AnonymousName],
+	[AnonymousEmail],
+	[AnonymousUrl],
+	[IsApproved],
+	[FileAttachment] 
+) VALUES (
+	@FeedbackID,
+	@UserID,
+	@CreateDate,
+	@Comment,
+	@AnonymousName,
+	@AnonymousEmail,
+	@AnonymousUrl,
+	@IsApproved,
+	@FileAttachment 
+)
+
+select SCOPE_IDENTITY()
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_CommentUpdate
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_CommentUpdate
+	@CommentID int, 
+	@FeedbackID int,
+	@UserID int,
+	@CreateDate datetime,
+	@Comment ntext,
+	@AnonymousName nvarchar(255),
+	@AnonymousEmail nvarchar(255),
+	@AnonymousUrl nvarchar(255),
+	@IsApproved bit,
+	@FileAttachment nvarchar(500)    
+AS
+
+UPDATE 
+	{databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Comment
+SET
+	[FeedbackID] = @FeedbackID,
+	[UserID] = @UserID,
+	[CreateDate] = @CreateDate,
+	[Comment] = @Comment,
+	[AnonymousName] = @AnonymousName,
+	[AnonymousEmail] = @AnonymousEmail,
+	[AnonymousUrl] = @AnonymousUrl,
+	[IsApproved] = @IsApproved,
+	[FileAttachment] = @FileAttachment 
+WHERE
+	[CommentID] = @CommentID
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_CommentList 
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_CommentList 
+	@ModuleID int,
+	@FeedbackID int,
+	@IsApproved bit 
+AS
+
+SELECT
+	c.[CommentID],
+	c.[FeedbackID],
+	c.[UserID],
+	c.[CreateDate],
+	c.[Comment], 
+	c.[AnonymousName],
+	c.[AnonymousEmail],
+	c.[AnonymousUrl],
+	c.[IsApproved],
+	c.[FileAttachment], 
+	u.[Username],
+	u.[FirstName],
+	u.[LastName],
+	u.[DisplayName] 
+FROM 
+	{databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Comment c INNER JOIN 
+		{databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Feedback f ON c.feedbackID = f.feedbackID LEFT OUTER JOIN 
+		{databaseOwner}{objectQualifier}Users u ON c.[UserID] = u.[UserID]
+WHERE
+	f.ModuleID = @ModuleID
+	AND
+	(@FeedbackID IS NULL OR c.[FeedbackID] = @FeedbackID)
+	AND
+	c.[IsApproved] = @IsApproved
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_CommentGet 
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_CommentGet 
+	@CommentID int
+AS
+
+SELECT
+	c.[CommentID],
+	c.[FeedbackID],
+	c.[UserID],
+	c.[CreateDate],
+	c.[Comment], 
+	c.[AnonymousName],
+	c.[AnonymousEmail],
+	c.[AnonymousUrl],
+	c.[IsApproved],
+	c.[FileAttachment], 
+	u.[Username],
+	u.[FirstName],
+	u.[LastName],
+	u.[DisplayName] 
+FROM 
+	{databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Comment c LEFT OUTER JOIN 
+		{databaseOwner}{objectQualifier}Users u ON c.[UserID] = u.[UserID]
+WHERE
+	c.[CommentID] = @CommentID
+GO

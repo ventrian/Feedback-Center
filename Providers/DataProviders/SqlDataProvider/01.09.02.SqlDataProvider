@@ -1,0 +1,257 @@
+﻿ALTER TABLE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Product ADD
+	InheritSecurity bit NOT NULL CONSTRAINT DF_{objectQualifier}DnnForge_FeedbackCenter_Product_InheritSecurity DEFAULT 1
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_ProductAdd
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_ProductAdd
+	@ModuleID int,
+	@Name nvarchar(100),
+	@IsActive bit,
+	@ParentID int,
+	@Email nvarchar(255),
+	@InheritSecurity bit  
+AS
+
+INSERT INTO {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Product (
+	[ModuleID],
+	[Name],
+	[IsActive],
+	[ParentID],
+	[Email],
+	[InheritSecurity] 
+) VALUES (
+	@ModuleID,
+	@Name,
+	@IsActive,
+	@ParentID,
+	@Email,
+	@InheritSecurity 
+)
+
+select SCOPE_IDENTITY()
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_ProductGet
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_ProductGet
+	@ProductID int
+AS
+
+SELECT
+	[ProductID],
+	[ModuleID],
+	[Name],
+	[IsActive],
+	[ParentID],
+	[Email],
+	[InheritSecurity]  
+FROM {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Product
+WHERE
+	[ProductID] = @ProductID
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_ProductList 
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_ProductList 
+	@moduleId int,
+	@ShowActiveOnly bit,
+	@ParentID int   
+AS
+
+SELECT
+	[ProductID],
+	[ModuleID],
+	[Name],
+	[IsActive],
+	[ParentID],
+	[Email],
+	[InheritSecurity] 
+FROM {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Product
+WHERE 
+	[ModuleID]=@moduleId 
+	and
+	([IsActive] = @ShowActiveOnly OR [IsActive] = 1)
+	and
+	(@ParentID is null OR [ParentID] = @ParentID) 
+ORDER  BY [Name] 
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_ProductUpdate
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_ProductUpdate
+	@ProductID int, 
+	@ModuleID int, 
+	@Name nvarchar(100), 
+	@IsActive bit,
+	@ParentID int, 
+	@Email nvarchar(255),
+	@InheritSecurity bit  
+AS
+
+UPDATE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Product SET
+	[ModuleID] = @ModuleID,
+	[Name] = @Name,
+	[IsActive] = @IsActive,
+	[ParentID] = @ParentID,
+	[Email] = @Email,
+	[InheritSecurity] = @InheritSecurity  
+WHERE
+	[ProductID] = @ProductID
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_ProductListAll
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_ProductListAll
+	@ModuleID int
+AS
+
+SET NOCOUNT ON
+DECLARE @level int, @line int, @current int, @ParentProductID int
+
+SET @ParentProductID = -1
+
+DECLARE @hierarchy TABLE(HierarchyID int IDENTITY (1,1), ProductID int, level int)
+DECLARE  @stack TABLE(item int, level int)
+INSERT INTO @stack VALUES (@ParentProductID, 1)
+SELECT @level = 1
+ 
+WHILE @level > 0
+BEGIN
+   IF EXISTS (SELECT * FROM @stack WHERE level = @level)
+	  BEGIN
+		 SELECT @current = item
+		 FROM @stack
+		 WHERE level = @level
+ 
+		IF( @ParentProductID = -1 OR @ParentProductID != @current )
+		BEGIN
+			insert into @hierarchy(ProductID, level) values(@current, @level) 
+		END
+ 
+		 DELETE FROM @stack
+		 WHERE level = @level
+			AND item = @current
+ 
+		 INSERT @stack
+			SELECT Product.ProductID, @level + 1
+			FROM {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Product Product
+			WHERE Product.ParentID = @current and ModuleID = @ModuleID 
+			ORDER BY [Name]
+ 
+		 IF @@ROWCOUNT > 0
+			SELECT @level = @level + 1
+	  END
+   ELSE
+	  SELECT @level = @level - 1
+END -- WHILE
+ 
+SELECT
+	Product.[ProductID],
+	[ModuleID],
+	[IsActive],
+	[ParentID],
+	[Email], 
+	[InheritSecurity], 
+	REPLICATE('.',(level-2)*2) + Product.[Name] as 'Name' 
+FROM 
+	{databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Product Product, @hierarchy h
+WHERE 
+	h.ProductID = Product.ProductID
+	AND
+	Product.[ModuleID] = @ModuleID
+ORDER BY 
+	h.HierarchyID ASC
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_FeedbackList
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_FeedbackList
+	@ModuleID int,
+	@ProductID int,
+	@IsClosed bit,
+	@Keywords nvarchar(255),
+	@SortOrder int, 
+	@MaxCount int,
+	@UserID int,
+	@TrackingID int,
+	@IsApproved bit,
+	@ProductIDs nvarchar(max)  
+AS
+
+if( @MaxCount is not null )
+begin
+	SET ROWCOUNT @MaxCount 
+end
+
+DECLARE @strQuery	nvarchar(4000)
+DECLARE @strWhere	nvarchar(2000)
+DECLARE @strOrder	nvarchar(2000)
+
+SELECT @strQuery = 'SELECT
+	f.[FeedbackID],
+	f.[ModuleID],
+	f.[TypeID],
+	f.[ProductID],
+	f.[UserID],
+	f.[IsClosed],
+	f.[IsResolved],
+	f.[CreateDate],
+	f.[Title],
+	f.[Details],
+	f.[VoteTotal], 
+	f.[VoteTotalNegative], 
+	f.[ClosedDate], 
+	f.[AnonymousName],
+	f.[AnonymousEmail],
+	f.[AnonymousUrl],
+	f.[IsApproved], 
+	u.[UserName],
+	u.[FirstName],
+	u.[LastName],
+	u.[DisplayName],
+	p.[Name] as ''ProductName'',
+	(f.[VoteTotal] - f.[VoteTotalNegative]) as ''Popularity'',
+	(SELECT TOP 1 c.CreateDate FROM {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Comment c WHERE c.FeedbackID = f.FeedbackID ORDER BY c.CreateDate DESC) as ''LastCommentDate''
+FROM 	
+	{databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Feedback f INNER JOIN
+        {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Product p ON f.[ProductID] = p.[ProductID] LEFT OUTER JOIN
+        {databaseOwner}{objectQualifier}Users u ON f.[UserID] = u.[UserID] '
+
+SELECT @strWhere = 'WHERE f.[ModuleID] = ' + cast(@ModuleID as nvarchar) + ' and f.[IsClosed] = ' + cast(@IsClosed as nvarchar) + ' and f.[IsApproved] = ' + cast(@IsApproved as nvarchar)
+
+IF( @ProductID > 0 )
+	SELECT @strWhere = @strWhere + ' and f.[ProductID] = ' + cast(@ProductID as nvarchar) 
+
+IF( @Keywords is not null )
+	SELECT @strWhere = @strWhere + ' and (f.[Title] like ''%' + cast(@Keywords as nvarchar) + '%'' or f.[Details] like ''%' + cast(@Keywords as nvarchar) + '%'' )'
+
+IF( @UserID is not null )
+	SELECT @strWhere = @strWhere + ' and u.[UserID] = ' + cast(@UserID as nvarchar) 
+	
+IF( @TrackingID is not null )
+	SELECT @strWhere = @strWhere + ' and ((SELECT COUNT(*) FROM {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Tracking t where t.FeedbackID = f.FeedbackID and t.UserID = ' + cast(@TrackingID as nvarchar) + ') > 0) '
+	
+IF( @ProductIDs is not null )
+	SELECT @strWhere = @strWhere + ' and f.[ProductID] IN (' + cast(@ProductIDs as nvarchar) + ')'
+
+IF( @SortOrder = 1 )
+	SELECT @strOrder = ' ORDER BY (f.[VoteTotal] - f.[VoteTotalNegative]) DESC' 
+
+IF( @SortOrder = 2 )
+	SELECT @strOrder = ' ORDER BY CreateDate DESC' 
+
+IF( @SortOrder = 3 )
+	SELECT @strOrder = ' ORDER BY ClosedDate DESC' 
+
+IF( @SortOrder = 4 )
+	SELECT @strOrder = ' ORDER BY (SELECT TOP 1 c.CreateDate FROM {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Comment c WHERE c.FeedbackID = f.FeedbackID ORDER BY c.CreateDate DESC) DESC' 
+
+EXEC(@strQuery + @strWhere + @strOrder)
+GO

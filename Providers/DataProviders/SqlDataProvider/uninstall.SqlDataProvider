@@ -1,0 +1,122 @@
+﻿DROP PROCEDURE {databaseOwner}{objectQualifier}DDnnForge_FeedbackCenter_CustomFieldAdd
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_CustomFieldDelete
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_CustomFieldGet
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_CustomFieldList
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_CustomFieldUpdate
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_CustomValueAdd
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_CustomValueDelete
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_CustomValueList
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_CustomValueUpdate
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_ProductListAll
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_GetStatistics
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_ProductDelete
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_ProductUpdate
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_ProductAdd
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_ProductList
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_ProductGet
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_TypeList
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_FeedbackDelete
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_FeedbackUpdate
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_FeedbackAdd
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_FeedbackList
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_FeedbackGet
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_CommentAdd
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_CommentDelete
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_CommentList
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_CommentUpdate
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_CommentGet
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_TrackingAdd
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_TrackingDelete
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_TrackingGet
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_TrackingList
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_VoteAdd
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_VoteGet
+GO
+
+DROP TABLE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_CustomValue
+GO
+
+DROP TABLE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_CustomField
+GO
+
+DROP TABLE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Vote
+GO
+
+DROP TABLE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Tracking
+GO
+
+DROP TABLE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Comment
+GO
+
+DROP TABLE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Type
+GO
+
+DROP TABLE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Product
+GO
+
+DROP TABLE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Feedback
+GO

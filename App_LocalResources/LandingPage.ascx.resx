@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<root>
+<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+<xsd:element name="root" msdata:IsDataSet="true">
+<xsd:complexType>
+<xsd:choice maxOccurs="unbounded">
+<xsd:element name="data">
+<xsd:complexType>
+<xsd:sequence>
+<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+</xsd:sequence>
+<xsd:attribute name="name" type="xsd:string" />
+<xsd:attribute name="type" type="xsd:string" />
+<xsd:attribute name="mimetype" type="xsd:string" />
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="resheader">
+<xsd:complexType>
+<xsd:sequence>
+<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+</xsd:sequence>
+<xsd:attribute name="name" type="xsd:string" use="required" />
+</xsd:complexType>
+</xsd:element>
+</xsd:choice>
+</xsd:complexType>
+</xsd:element>
+</xsd:schema>
+<resheader name="ResMimeType">
+<value>text/microsoft-resx</value>
+</resheader>
+<resheader name="Version">
+<value>1.0.0.0</value>
+</resheader>
+<resheader name="Reader">
+<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=1.0.3300.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+</resheader>
+<resheader name="Writer">
+<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=1.0.3300.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+</resheader>
+<data name="NA.Text">
+	<value>N/A</value>
+</data>
+<data name="MakeSuggestion.Text">
+	<value>Make a Suggestion</value>
+</data>
+<data name="MakeSuggestionDetail.Text">
+	<value>Suggestions are requests for changes in design or behavior of software. You can see that the software is working as designed, but you'd like better or different functionality. </value>
+</data>
+<data name="MakeSuggestionClick.Text">
+	<value>Click here to make a suggestion</value>
+</data>
+<data name="ProductList.Text">
+	<value>Product List</value>
+</data>
+<data name="SearchAllFeedback.Text">
+	<value>Search All Feedback</value>
+</data>
+<data name="RecentlyImplemented.Text">
+<value>Recently Implemented</value>
+</data>
+<data name="RecentlyCommented.Text">
+<value>Recently Commented</value>
+</data>
+<data name="MoreFeedback.Text">
+<value>More Feedback</value>
+</data>
+<data name="WhatsNew.Text">
+<value>What's New</value>
+</data>
+<data name="HighestRated.Text">
+<value>Highest Rated</value>
+</data>
+<data name="MyFeedback.Text">
+<value>My Feedback</value>
+</data>
+<data name="NoMyFeedback.Text">
+<value>You have no feedback yet.</value>
+</data>
+<data name="MoreMyFeedback.Text">
+<value>More My Feedback</value>
+</data>
+<data name="TrackingFeedback.Text">
+<value>Feedback I am Tracking</value>
+</data>
+<data name="MoreTrackingFeedback.Text">
+<value>More Tracking Feedback</value>
+</data>
+<data name="NoTrackingFeedback.Text">
+<value>You are not tracking any feedback.</value>
+</data>
+<data name="Statistics.Text">
+	<value>Statistics</value>
+</data>
+<data name="Period.Text">
+	<value>Feedback in the last {0} days:-</value>
+</data>
+<data name="PeriodAll.Text">
+	<value>Feedback for all time:-</value>
+</data>
+<data name="FeedbackCreated.Text">
+	<value>Feedback Submitted:</value>
+</data>
+<data name="FeedbackResolved.Text">
+	<value>Feedback Resolved:</value>
+</data>
+<data name="FeedbackAvgTime.Text">
+	<value>Average Time Open (Days):</value>
+</data>
+<data name="ModuleHelp.Text">
+<value>&lt;h1&gt;Feedback Center&lt;/h1&gt;&lt;p&gt;This module allows users of the portal to provide feedback.&lt;/p&gt;</value>
+</data>
+</root>

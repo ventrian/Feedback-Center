@@ -1,0 +1,246 @@
+﻿CREATE TABLE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_CustomField(
+	[CustomFieldID] [int] IDENTITY(1,1) NOT NULL,
+	[ModuleID] [int] NOT NULL,
+	[Name] [nvarchar](255) NOT NULL,
+	[FieldType] [int] NOT NULL,
+	[FieldElements] [ntext] NULL,
+	[DefaultValue] [nvarchar](255) NULL,
+	[Caption] [nvarchar](255) NULL,
+	[CaptionHelp] [nvarchar](255) NULL,
+	[IsRequired] [bit] NOT NULL,
+	[IsVisible] [bit] NOT NULL,
+	[SortOrder] [int] NOT NULL,
+	[ValidationType] [int] NOT NULL,
+	[RegularExpression] [nvarchar](4000) NULL,
+	[Length] [int] NULL,
+ CONSTRAINT [PK_{objectQualifier}DnnForge_FeedbackCenter_CustomField] PRIMARY KEY CLUSTERED 
+(
+	[CustomFieldID] ASC
+)
+) ON [PRIMARY]
+GO
+
+CREATE TABLE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_CustomValue(
+	[CustomValueID] [int] IDENTITY(1,1) NOT NULL,
+	[FeedbackID] [int] NOT NULL,
+	[CustomFieldID] [int] NOT NULL,
+	[CustomValue] [ntext] NOT NULL,
+ CONSTRAINT [PK_{objectQualifier}Ventrian_FeedbackCenter_CustomValue] PRIMARY KEY CLUSTERED 
+(
+	[CustomValueID] ASC
+)
+) ON [PRIMARY] 
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_CustomFieldAdd 
+	@ModuleID int,
+	@Name nvarchar(255),
+	@FieldType int,
+	@FieldElements ntext,
+	@DefaultValue nvarchar(255),
+	@Caption nvarchar(255),
+	@CaptionHelp nvarchar(255),
+	@IsRequired bit,
+	@IsVisible bit,
+	@SortOrder int,
+	@ValidationType int, 
+	@Length int,
+	@RegularExpression nvarchar(4000)
+AS
+
+INSERT INTO {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_CustomField (
+	[ModuleID],
+	[Name],
+	[FieldType],
+	[FieldElements],
+	[DefaultValue],
+	[Caption],
+	[CaptionHelp],
+	[IsRequired],
+	[IsVisible],
+	[SortOrder],
+	[ValidationType],
+	[Length],
+	[RegularExpression]
+) VALUES (
+	@ModuleID,
+	@Name,
+	@FieldType,
+	@FieldElements,
+	@DefaultValue,
+	@Caption,
+	@CaptionHelp,
+	@IsRequired,
+	@IsVisible,
+	@SortOrder,
+	@ValidationType,
+	@Length,
+	@RegularExpression
+)
+
+select SCOPE_IDENTITY()
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_CustomFieldDelete 
+	@CustomFieldID int
+AS
+
+DELETE FROM 
+	{databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_CustomValue
+WHERE
+	CustomFieldID = @CustomFieldID
+
+DELETE FROM 
+	{databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_CustomField
+WHERE
+	CustomFieldID = @CustomFieldID
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_CustomFieldGet 
+      @CustomFieldID int
+AS
+
+SELECT     
+      CustomFieldID, 
+      ModuleID, 
+      [Name], 
+      FieldType, 
+      FieldElements, 
+      DefaultValue, 
+      Caption, 
+      CaptionHelp, 
+      IsRequired, 
+      IsVisible, 
+      SortOrder, 
+      ValidationType, 
+      RegularExpression, 
+      [Length]
+FROM         
+      {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_CustomField
+WHERE
+      [CustomFieldID] = @CustomFieldID
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_CustomFieldList 
+      @ModuleID int
+AS
+
+SELECT     
+      CustomFieldID, 
+      ModuleID, 
+      [Name], 
+      FieldType, 
+      FieldElements, 
+      DefaultValue, 
+      Caption, 
+      CaptionHelp, 
+      IsRequired, 
+      IsVisible, 
+      SortOrder, 
+      ValidationType, 
+      RegularExpression, 
+      [Length]
+FROM         
+      {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_CustomField
+WHERE
+      [ModuleID] = @ModuleID
+ORDER BY
+	SortOrder
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_CustomFieldUpdate 
+	@CustomFieldID int,
+	@ModuleID int,
+	@Name nvarchar(255),
+	@FieldType int,
+	@FieldElements ntext,
+	@DefaultValue nvarchar(255),
+	@Caption nvarchar(255),
+	@CaptionHelp nvarchar(255),
+	@IsRequired bit,
+	@IsVisible bit,
+	@SortOrder int,
+	@ValidationType int, 
+	@Length int,
+	@RegularExpression nvarchar(4000)
+AS
+
+UPDATE
+	{databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_CustomField
+SET
+	[ModuleID] = @ModuleID,
+	[Name] = @Name,
+	[FieldType] = @FieldType,
+	[FieldElements] = @FieldElements,
+	[DefaultValue] = @DefaultValue,
+	[Caption] = @Caption,
+	[CaptionHelp] = @CaptionHelp,
+	[IsRequired] = @IsRequired,
+	[IsVisible] = @IsVisible,
+	[SortOrder] = @SortOrder,
+	[ValidationType] = @ValidationType,
+	[Length] = @Length,
+	[RegularExpression] = @RegularExpression
+WHERE
+	CustomFieldID = @CustomFieldID
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_CustomValueAdd 
+	@FeedbackID int,
+	@CustomFieldID int,
+	@CustomValue ntext
+AS
+
+INSERT INTO {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_CustomValue (
+	[FeedbackID],
+	[CustomFieldID],
+	[CustomValue]
+) VALUES (
+	@FeedbackID,
+	@CustomFieldID,
+	@CustomValue
+)
+
+select SCOPE_IDENTITY()
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_CustomValueDelete 
+	@FeedbackID int,
+	@CustomFieldID int
+AS
+
+DELETE FROM {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_CustomValue
+WHERE
+	[FeedbackID] = @FeedbackID AND 
+	[CustomFieldID] = @CustomFieldID
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_CustomValueList 
+	@FeedbackID int
+AS
+
+SELECT
+	[CustomValueID],
+	[FeedbackID],
+	[CustomFieldID],
+	[CustomValue]
+FROM 
+	{databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_CustomValue
+WHERE
+	[FeedbackID] = @FeedbackID
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_CustomValueUpdate 
+	@CustomValueID int, 
+	@FeedbackID int, 
+	@CustomFieldID int, 
+	@CustomValue ntext 
+AS
+
+UPDATE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_CustomValue SET
+	[FeedbackID] = @FeedbackID,
+	[CustomFieldID] = @CustomFieldID,
+	[CustomValue] = @CustomValue
+WHERE
+	[CustomValueID] = @CustomValueID
+GO

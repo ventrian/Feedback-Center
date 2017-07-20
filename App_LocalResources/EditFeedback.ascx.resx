@@ -1,0 +1,300 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AllFeedback.Text" xml:space="preserve">
+    <value>All Feedback</value>
+  </data>
+  <data name="AddNewFeedback.Text" xml:space="preserve">
+    <value>Add New Feedback</value>
+  </data>
+  <data name="EditFeedback.Text" xml:space="preserve">
+    <value>Edit Feedback</value>
+  </data>
+  <data name="SuggestionDetails.Text" xml:space="preserve">
+    <value>Suggestion Details</value>
+  </data>
+  <data name="Submit.Text" xml:space="preserve">
+    <value>Submit</value>
+  </data>
+  <data name="EditProducts.Text" xml:space="preserve">
+    <value>Edit Products</value>
+  </data>
+  <data name="AllProducts.Text" xml:space="preserve">
+    <value>-- All Products --</value>
+  </data>
+  <data name="Type.Text" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="Type.Help" xml:space="preserve">
+    <value>Select the type of feedback.</value>
+  </data>
+  <data name="Product.Text" xml:space="preserve">
+    <value>Product</value>
+  </data>
+  <data name="Product.Help" xml:space="preserve">
+    <value>Select a product that the feedback is about.</value>
+  </data>
+  <data name="valProducts.ErrorMessage" xml:space="preserve">
+    <value>&lt;br&gt;Product Is Required</value>
+  </data>
+  <data name="Title.Text" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="Title.Help" xml:space="preserve">
+    <value>Enter a Title.</value>
+  </data>
+  <data name="valTitle.ErrorMessage" xml:space="preserve">
+    <value>&lt;br&gt;Title Is Required</value>
+  </data>
+  <data name="Description.Text" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="Description.Help" xml:space="preserve">
+    <value>Enter a Description.</value>
+  </data>
+  <data name="valDescription.ErrorMessage" xml:space="preserve">
+    <value>&lt;br&gt;Description Is Required</value>
+  </data>
+  <data name="Status.Text" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Open.Text" xml:space="preserve">
+    <value>Open</value>
+  </data>
+  <data name="Closed.Text" xml:space="preserve">
+    <value>Closed</value>
+  </data>
+  <data name="Implemented.Text" xml:space="preserve">
+    <value>Implemented</value>
+  </data>
+  <data name="NotificationSubject.Text" xml:space="preserve">
+    <value>[PORTALNAME]: New Feedback</value>
+  </data>
+  <data name="Notification.Text" xml:space="preserve">
+    <value>At [POSTDATE] a new suggestion was posted:- [TITLE].
+
+To view the complete suggestion and reply, please visit:
+[LINK]
+
+Thank you,
+[PORTALNAME]
+		</value>
+  </data>
+  <data name="NotificationStatusSubject.Text" xml:space="preserve">
+    <value>[PORTALNAME]: Feedback Change Of Status</value>
+  </data>
+  <data name="NotificationStatus.Text" xml:space="preserve">
+    <value>At [POSTDATE] a suggestion ([TITLE]) you are tracking changed status from {0} to {1}.
+
+To view the complete suggestion and reply, please visit:
+[LINK]
+
+Thank you,
+[PORTALNAME]
+		</value>
+  </data>
+  <data name="ControlTitle_editfeedback.Text" xml:space="preserve">
+    <value>Provide Feedback</value>
+  </data>
+  <data name="ModuleHelp.Text" xml:space="preserve">
+    <value>&lt;h1&gt;About Edit Feedback&lt;/h1&gt;&lt;p&gt;The module allows you to edit or add feedback.&lt;/p&gt;</value>
+  </data>
+  <data name="plEmail.Help" xml:space="preserve">
+    <value>Enter your email.</value>
+  </data>
+  <data name="plEmail.Text" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="plName.Help" xml:space="preserve">
+    <value>Enter your name.</value>
+  </data>
+  <data name="plName.Text" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="plUrl.Help" xml:space="preserve">
+    <value>Enter your website url (optional).</value>
+  </data>
+  <data name="plUrl.Text" xml:space="preserve">
+    <value>Website</value>
+  </data>
+  <data name="valEmail.ErrorMessage" xml:space="preserve">
+    <value>&lt;br&gt;Email Is Required</value>
+  </data>
+  <data name="valEmailIsValid.ErrorMessage" xml:space="preserve">
+    <value>&lt;br&gt;Invalid Email Address</value>
+  </data>
+  <data name="valName.ErrorMessage" xml:space="preserve">
+    <value>&lt;br&gt;Name Is Required</value>
+  </data>
+  <data name="UserDetails.Text" xml:space="preserve">
+    <value>Your Details</value>
+  </data>
+  <data name="InvalidCaptcha.Text" xml:space="preserve">
+    <value>You must enter a valid code.</value>
+  </data>
+  <data name="plCaptcha.Help" xml:space="preserve">
+    <value>Enter the captcha verification code.</value>
+  </data>
+  <data name="plCaptcha.Text" xml:space="preserve">
+    <value>Verification</value>
+  </data>
+  <data name="IsApproved.help" xml:space="preserve">
+    <value>Check to approve the feedback.</value>
+  </data>
+  <data name="IsApproved.Text" xml:space="preserve">
+    <value>Is Approved</value>
+  </data>
+  <data name="Approval.Text" xml:space="preserve">
+    <value>At [POSTDATE] a new suggestion was posted:- [TITLE].
+
+This post requires approval, you may approve it here:
+[LINK]
+
+Thank you,
+[PORTALNAME]
+		</value>
+  </data>
+  <data name="ApprovalSubject.Text" xml:space="preserve">
+    <value>[PORTALNAME]: New Feedback Requires Approval</value>
+  </data>
+  <data name="SelectValue.Text" xml:space="preserve">
+    <value>&lt;Select [VALUE]&gt;</value>
+  </data>
+  <data name="valFieldCurrency.Text" xml:space="preserve">
+    <value>[CUSTOMFIELD] must be a currency.</value>
+  </data>
+  <data name="valFieldDate.Text" xml:space="preserve">
+    <value>[CUSTOMFIELD] must be a date.</value>
+  </data>
+  <data name="valFieldDecimal.Text" xml:space="preserve">
+    <value>[CUSTOMFIELD] must be a decimal.</value>
+  </data>
+  <data name="valFieldEmail.Text" xml:space="preserve">
+    <value>[CUSTOMFIELD] must be an email address.</value>
+  </data>
+  <data name="valFieldNumber.Text" xml:space="preserve">
+    <value>[CUSTOMFIELD] must be a number.</value>
+  </data>
+  <data name="valFieldRegex.Text" xml:space="preserve">
+    <value>[CUSTOMFIELD] is an invalid format.</value>
+  </data>
+  <data name="valFieldRequired.Text" xml:space="preserve">
+    <value>[CUSTOMFIELD] is required. </value>
+  </data>
+</root>

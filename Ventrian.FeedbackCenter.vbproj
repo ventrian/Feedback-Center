@@ -1,0 +1,486 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A9D13B24-4881-44C4-AF14-366721DB6EB5}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <RootNamespace>
+    </RootNamespace>
+    <AssemblyName>Ventrian.FeedbackCenter</AssemblyName>
+    <OptionStrict>Off</OptionStrict>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>..\..\bin\</OutputPath>
+    <DocumentationFile>Ventrian.xml</DocumentationFile>
+    <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</NoWarn>
+    <WarningsAsErrors>
+    </WarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>Ventrian.xml</DocumentationFile>
+    <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</NoWarn>
+    <WarningsAsErrors>
+    </WarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DotNetNuke, Version=4.5.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\DotNetNuke.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.Mobile" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Collections.Specialized" />
+    <Import Include="System.Configuration" />
+    <Import Include="System.Text" />
+    <Import Include="System.Text.RegularExpressions" />
+    <Import Include="System.Web" />
+    <Import Include="System.Web.Caching" />
+    <Import Include="System.Web.SessionState" />
+    <Import Include="System.Web.Security" />
+    <Import Include="System.Web.Profile" />
+    <Import Include="System.Web.UI" />
+    <Import Include="System.Web.UI.WebControls" />
+    <Import Include="System.Web.UI.WebControls.WebParts" />
+    <Import Include="System.Web.UI.HtmlControls" />
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_LocalResources\Default.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\EditFeedback.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\EditFeedbackComplete.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\EditProduct.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\EditProducts.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\LandingPage.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\MyFeedback.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\NotAuthorized.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\Search.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\Settings.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\Tracking.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\ViewFeedback.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Default.ascx" />
+    <Content Include="EditFeedbackComplete.ascx" />
+    <Content Include="EditProduct.ascx" />
+    <Content Include="Images\icon_comment.gif" />
+    <Content Include="Images\thumbsdown.gif" />
+    <Content Include="Images\thumbsup.gif" />
+    <Content Include="Images\xml.gif" />
+    <Content Include="Images\xml_small.gif" />
+    <Content Include="LandingPage.ascx" />
+    <Content Include="module.css" />
+    <Content Include="MyFeedback.ascx" />
+    <Content Include="NotAuthorized.ascx" />
+    <Content Include="RSS.aspx" />
+    <Content Include="RSS.xsl" />
+    <Content Include="Search.ascx" />
+    <Content Include="Tracking.ascx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ApproveFeedback.ascx.designer.vb">
+      <DependentUpon>ApproveFeedback.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="ApproveFeedback.ascx.vb">
+      <DependentUpon>ApproveFeedback.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Base\FeedbackCenterBase.vb">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Base\FeedbackCenterControlBase.vb">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\Approval.ascx.designer.vb">
+      <DependentUpon>Approval.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Approval.ascx.vb">
+      <DependentUpon>Approval.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ApproveComments.ascx.designer.vb">
+      <DependentUpon>ApproveComments.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="ApproveComments.ascx.vb">
+      <DependentUpon>ApproveComments.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\PostComment.ascx.designer.vb">
+      <DependentUpon>PostComment.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PostComment.ascx.vb">
+      <DependentUpon>PostComment.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EditEmailFiles.ascx.designer.vb">
+      <DependentUpon>EditEmailFiles.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="EditEmailFiles.ascx.vb">
+      <DependentUpon>EditEmailFiles.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Default.ascx.vb">
+      <DependentUpon>Default.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EditFeedback.ascx.designer.vb">
+      <DependentUpon>EditFeedback.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="EditFeedback.ascx.vb">
+      <DependentUpon>EditFeedback.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EditFeedbackComplete.ascx.vb">
+      <DependentUpon>EditFeedbackComplete.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EditLayoutFiles.ascx.designer.vb">
+      <DependentUpon>EditLayoutFiles.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="EditLayoutFiles.ascx.vb">
+      <DependentUpon>EditLayoutFiles.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EditProduct.ascx.vb">
+      <DependentUpon>EditProduct.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EditProducts.ascx.designer.vb">
+      <DependentUpon>EditProducts.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="EditProducts.ascx.vb">
+      <DependentUpon>EditProducts.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Entities\CommentController.vb" />
+    <Compile Include="Entities\CommentInfo.vb" />
+    <Compile Include="Entities\Constants.vb" />
+    <Compile Include="Entities\Layout\TokenEditType.vb" />
+    <Compile Include="Entities\SortDirection.vb" />
+    <Compile Include="Entities\CrumbInfo.vb" />
+    <Compile Include="Entities\CustomFields\CustomFieldController.vb" />
+    <Compile Include="Entities\CustomFields\CustomFieldInfo.vb" />
+    <Compile Include="Entities\CustomFields\CustomFieldType.vb" />
+    <Compile Include="Entities\CustomFields\CustomFieldValidationType.vb" />
+    <Compile Include="Entities\CustomFields\CustomValueController.vb" />
+    <Compile Include="Entities\CustomFields\CustomValueInfo.vb" />
+    <Compile Include="Entities\Emails\EmailTokensType.vb" />
+    <Compile Include="Entities\Emails\EmailType.vb" />
+    <Compile Include="Entities\Emails\EmailController.vb" />
+    <Compile Include="Entities\Emails\EmailInfo.vb" />
+    <Compile Include="Entities\FeedbackController.vb" />
+    <Compile Include="Entities\FeedbackInfo.vb" />
+    <Compile Include="Entities\FeedbackSettings.vb" />
+    <Compile Include="Entities\Layout\TokenCommentFormType.vb" />
+    <Compile Include="Entities\Layout\TokenCommentType.vb" />
+    <Compile Include="Entities\Layout\TokenProductType.vb" />
+    <Compile Include="Entities\Layout\TokenStatisticsType.vb" />
+    <Compile Include="Entities\Layout\TokenSuggestionType.vb" />
+    <Compile Include="Entities\Layout\TokenLandingType.vb" />
+    <Compile Include="Entities\Layout\TokenFeedbackType.vb" />
+    <Compile Include="Entities\Layout\LayoutController.vb" />
+    <Compile Include="Entities\Layout\LayoutInfo.vb" />
+    <Compile Include="Entities\Layout\LayoutType.vb" />
+    <Compile Include="Entities\ProductController.vb" />
+    <Compile Include="Entities\ProductInfo.vb" />
+    <Compile Include="Entities\SortType.vb" />
+    <Compile Include="Entities\StatisticsController.vb" />
+    <Compile Include="Entities\StatisticsInfo.vb" />
+    <Compile Include="Entities\TrackingController.vb" />
+    <Compile Include="Entities\TrackingInfo.vb" />
+    <Compile Include="Entities\TypeController.vb" />
+    <Compile Include="Entities\TypeInfo.vb" />
+    <Compile Include="Entities\VoteController.vb" />
+    <Compile Include="Entities\VoteInfo.vb" />
+    <Compile Include="LandingPage.ascx.vb">
+      <DependentUpon>LandingPage.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Latest.ascx.designer.vb">
+      <DependentUpon>Latest.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Latest.ascx.vb">
+      <DependentUpon>Latest.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="LatestOptions.ascx.designer.vb">
+      <DependentUpon>LatestOptions.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="LatestOptions.ascx.vb">
+      <DependentUpon>LatestOptions.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MyFeedback.ascx.vb">
+      <DependentUpon>MyFeedback.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="NotAuthorized.ascx.vb">
+      <DependentUpon>NotAuthorized.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Providers\DataProviders\DataProvider.vb" />
+    <Compile Include="RSS.aspx.vb">
+      <DependentUpon>RSS.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Search.ascx.vb">
+      <DependentUpon>Search.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Settings.ascx.designer.vb">
+      <DependentUpon>Settings.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Settings.ascx.vb">
+      <DependentUpon>Settings.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Tracking.ascx.vb">
+      <DependentUpon>Tracking.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EditCustomField.ascx.designer.vb">
+      <DependentUpon>EditCustomField.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="EditCustomField.ascx.vb">
+      <DependentUpon>EditCustomField.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EditCustomFields.ascx.designer.vb">
+      <DependentUpon>EditCustomFields.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="EditCustomFields.ascx.vb">
+      <DependentUpon>EditCustomFields.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ViewFeedback.ascx.designer.vb">
+      <DependentUpon>ViewFeedback.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="ViewFeedback.ascx.vb">
+      <DependentUpon>ViewFeedback.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_LocalResources\Control-Approval.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\ApproveComments.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\ApproveFeedback.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\LatestOptions.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\Latest.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\EditCustomField.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\EditCustomFields.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\EditLayoutFiles.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\EditEmailFiles.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <EmbeddedResource Include="Default.ascx.resx">
+      <DependentUpon>Default.ascx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditFeedbackComplete.ascx.resx">
+      <DependentUpon>EditFeedbackComplete.ascx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditProduct.ascx.resx">
+      <DependentUpon>EditProduct.ascx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LandingPage.ascx.resx">
+      <DependentUpon>LandingPage.ascx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MyFeedback.ascx.resx">
+      <DependentUpon>MyFeedback.ascx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NotAuthorized.ascx.resx">
+      <DependentUpon>NotAuthorized.ascx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RSS.aspx.resx">
+      <DependentUpon>RSS.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Search.ascx.resx">
+      <DependentUpon>Search.ascx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tracking.ascx.resx">
+      <DependentUpon>Tracking.ascx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FeedbackCenter.dnn" />
+    <None Include="Resources.zip" />
+    <Content Include="ApproveFeedback.ascx" />
+    <Content Include="Controls\Approval.ascx" />
+    <Content Include="ApproveComments.ascx" />
+    <Content Include="Controls\PostComment.ascx" />
+    <Content Include="EditEmailFiles.ascx" />
+    <Content Include="EditFeedback.ascx" />
+    <Content Include="EditLayoutFiles.ascx" />
+    <Content Include="EditProducts.ascx" />
+    <Content Include="Latest.ascx" />
+    <Content Include="LatestOptions.ascx" />
+    <Content Include="Settings.ascx" />
+    <Content Include="EditCustomField.ascx" />
+    <Content Include="EditCustomFields.ascx" />
+    <Content Include="TemplatesEmail\Default\Feedback.Approved.Body.Html" />
+    <Content Include="TemplatesEmail\Default\Feedback.Approved.Subject.Html" />
+    <Content Include="TemplatesEmail\Default\Feedback.Require.Approval.Subject.Html" />
+    <Content Include="TemplatesEmail\Default\Feedback.Require.Approval.Body.Html" />
+    <Content Include="TemplatesEmail\Default\Comment.Require.Approval.Body.Html" />
+    <Content Include="TemplatesEmail\Default\Comment.Require.Approval.Subject.Html" />
+    <Content Include="TemplatesEmail\Default\Comment.Body.Html" />
+    <Content Include="TemplatesEmail\Default\Comment.Subject.Html" />
+    <Content Include="TemplatesEmail\Default\Comment.Approved.Body.Html" />
+    <Content Include="TemplatesEmail\Default\Comment.Approved.Subject.Html" />
+    <Content Include="TemplatesEmail\Default\Feedback.Notification.Status.Body.Html" />
+    <Content Include="TemplatesEmail\Default\Feedback.Notification.Status.Subject.Html" />
+    <Content Include="TemplatesEmail\Default\Feedback.Notification.Body.Html" />
+    <Content Include="TemplatesEmail\Default\Feedback.Notification.Subject.Html" />
+    <Content Include="Templates\Default\Landing.FeedbackTracking.Footer.Html" />
+    <Content Include="Templates\Default\Landing.FeedbackTracking.Header.Html" />
+    <Content Include="Templates\Default\Landing.FeedbackTracking.Item.Html" />
+    <Content Include="Templates\Default\Landing.HighestRated.Footer.Html" />
+    <Content Include="Templates\Default\Landing.HighestRated.Header.Html" />
+    <Content Include="Templates\Default\Landing.HighestRated.Item.Html" />
+    <Content Include="Templates\Default\Landing.Html" />
+    <Content Include="Templates\Default\Landing.Make.Suggestion.Html" />
+    <Content Include="Templates\Default\Landing.MyFeedback.Footer.Html" />
+    <Content Include="Templates\Default\Landing.MyFeedback.Header.Html" />
+    <Content Include="Templates\Default\Landing.MyFeedback.Item.Html" />
+    <Content Include="Templates\Default\Landing.ProductList.Footer.Html" />
+    <Content Include="Templates\Default\Landing.ProductList.Header.Html" />
+    <Content Include="Templates\Default\Landing.ProductList.Item.Html" />
+    <Content Include="Templates\Default\Landing.RecentlyCommented.Footer.Html" />
+    <Content Include="Templates\Default\Landing.RecentlyCommented.Header.Html" />
+    <Content Include="Templates\Default\Landing.RecentlyCommented.Item.Html" />
+    <Content Include="Templates\Default\Landing.RecentlyImplemented.Footer.Html" />
+    <Content Include="Templates\Default\Landing.RecentlyImplemented.Header.Html" />
+    <Content Include="Templates\Default\Landing.RecentlyImplemented.Item.Html" />
+    <Content Include="Templates\Default\Landing.Statistics.Html" />
+    <Content Include="Templates\Default\Landing.WhatsNew.Footer.Html" />
+    <Content Include="Templates\Default\Landing.WhatsNew.Header.Html" />
+    <Content Include="Templates\Default\Landing.WhatsNew.Item.Html" />
+    <Content Include="Templates\Default\Message.Html" />
+    <Content Include="Templates\Default\Search.ChildProductList.Footer.Html" />
+    <Content Include="Templates\Default\Search.ChildProductList.Header.Html" />
+    <Content Include="Templates\Default\Search.ChildProductList.Item.Html" />
+    <Content Include="Templates\Default\Search.Listing.Footer.Html" />
+    <Content Include="Templates\Default\Search.Listing.Header.Html" />
+    <Content Include="Templates\Default\Search.Listing.Item.Html" />
+    <Content Include="Templates\Default\Search.Make.Suggestion.Html" />
+    <Content Include="Templates\Default\View.Comment.Footer.Html" />
+    <Content Include="Templates\Default\View.Comment.Form.Html" />
+    <Content Include="Templates\Default\View.Comment.Header.Html" />
+    <Content Include="Templates\Default\View.Comment.Item.Html" />
+    <Content Include="Templates\Default\View.Item.Html" />
+    <Content Include="ViewFeedback.ascx" />
+    <Content Include="web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="My Project\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" Condition="" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>59586</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>
+          </IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

@@ -1,0 +1,164 @@
+﻿ALTER TABLE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Product ADD
+	ParentID int NULL,
+	Email nvarchar(255) NULL
+GO
+
+UPDATE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Product
+SET ParentID = -1
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_ProductAdd
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_ProductAdd
+	@ModuleID int,
+	@Name nvarchar(100),
+	@IsActive bit,
+	@ParentID int,
+	@Email nvarchar(255) 
+AS
+
+INSERT INTO {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Product (
+	[ModuleID],
+	[Name],
+	[IsActive],
+	[ParentID],
+	[Email]
+) VALUES (
+	@ModuleID,
+	@Name,
+	@IsActive,
+	@ParentID,
+	@Email 
+)
+
+select SCOPE_IDENTITY()
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_ProductGet 
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_ProductGet 
+	@ProductID int
+AS
+
+SELECT
+	[ProductID],
+	[ModuleID],
+	[Name],
+	[IsActive],
+	[ParentID],
+	[Email] 
+FROM {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Product
+WHERE
+	[ProductID] = @ProductID
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_ProductUpdate
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_ProductUpdate
+	@ProductID int, 
+	@ModuleID int, 
+	@Name nvarchar(100), 
+	@IsActive bit,
+	@ParentID int, 
+	@Email nvarchar(255) 
+AS
+
+UPDATE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Product SET
+	[ModuleID] = @ModuleID,
+	[Name] = @Name,
+	[IsActive] = @IsActive,
+	[ParentID] = @ParentID,
+	[Email] = @Email 
+WHERE
+	[ProductID] = @ProductID
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_ProductList 
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_ProductList 
+	@moduleId int,
+	@ShowActiveOnly bit,
+	@ParentID int   
+AS
+
+SELECT
+	[ProductID],
+	[ModuleID],
+	[Name],
+	[IsActive],
+	[ParentID],
+	[Email]
+FROM {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Product
+WHERE 
+	[ModuleID]=@moduleId 
+	and
+	([IsActive] = @ShowActiveOnly OR [IsActive] = 1)
+	and
+	(@ParentID is null OR [ParentID] = @ParentID) 
+ORDER  BY [Name] 
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_ProductListAll
+	@ModuleID int
+AS
+
+SET NOCOUNT ON
+DECLARE @level int, @line int, @current int, @ParentProductID int
+
+SET @ParentProductID = -1
+
+DECLARE @hierarchy TABLE(HierarchyID int IDENTITY (1,1), ProductID int, level int)
+DECLARE  @stack TABLE(item int, level int)
+INSERT INTO @stack VALUES (@ParentProductID, 1)
+SELECT @level = 1
+ 
+WHILE @level > 0
+BEGIN
+   IF EXISTS (SELECT * FROM @stack WHERE level = @level)
+	  BEGIN
+		 SELECT @current = item
+		 FROM @stack
+		 WHERE level = @level
+ 
+		IF( @ParentProductID = -1 OR @ParentProductID != @current )
+		BEGIN
+			insert into @hierarchy(ProductID, level) values(@current, @level) 
+		END
+ 
+		 DELETE FROM @stack
+		 WHERE level = @level
+			AND item = @current
+ 
+		 INSERT @stack
+			SELECT Product.ProductID, @level + 1
+			FROM {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Product Product
+			WHERE Product.ParentID = @current and ModuleID = @ModuleID 
+			ORDER BY [Name]
+ 
+		 IF @@ROWCOUNT > 0
+			SELECT @level = @level + 1
+	  END
+   ELSE
+	  SELECT @level = @level - 1
+END -- WHILE
+ 
+SELECT
+	Product.[ProductID],
+	[ModuleID],
+	[IsActive],
+	[ParentID],
+	[Email], 
+	REPLICATE('.',(level-2)*2) + Product.[Name] as 'Name' 
+FROM 
+	{databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Product Product, @hierarchy h
+WHERE 
+	h.ProductID = Product.ProductID
+	AND
+	Product.[ModuleID] = @ModuleID
+ORDER BY 
+	h.HierarchyID ASC
+GO

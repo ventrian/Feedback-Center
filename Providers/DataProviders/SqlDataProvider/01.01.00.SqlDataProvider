@@ -1,0 +1,213 @@
+﻿ALTER TABLE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Vote ADD
+	IsPositive bit NOT NULL Default -1
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Feedback ADD
+	VoteTotalNegative int NOT NULL Default 0
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_FeedbackGet
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_FeedbackGet
+	@FeedbackID int
+AS
+
+SELECT
+	f.[FeedbackID],
+	f.[ModuleID],
+	f.[TypeID],
+	f.[ProductID],
+	f.[UserID],
+	f.[IsClosed],
+	f.[IsResolved],
+	f.[CreateDate],
+	f.[Title],
+	f.[Details],
+	f.[VoteTotal], 
+	f.[VoteTotalNegative], 
+	u.[UserName],
+	u.[FirstName],
+	u.[LastName],
+	p.[Name] as 'ProductName' 
+FROM 	
+	{objectQualifier}DnnForge_FeedbackCenter_Feedback f, {objectQualifier}DnnForge_FeedbackCenter_Product p, {objectQualifier}Users u
+WHERE 
+	f.[ProductID] = p.[ProductID]
+	and
+	f.[UserID] = u.[UserID] 
+	and 
+	[FeedbackID] = @FeedbackID
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_FeedbackList
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_FeedbackList
+	@ModuleID int,
+	@ProductID int,
+	@IsClosed bit,
+	@Keywords nvarchar(255) 
+AS
+
+SELECT
+	f.[FeedbackID],
+	f.[ModuleID],
+	f.[TypeID],
+	f.[ProductID],
+	f.[UserID],
+	f.[IsClosed],
+	f.[IsResolved],
+	f.[CreateDate],
+	f.[Title],
+	f.[Details],
+	f.[VoteTotal], 
+	f.[VoteTotalNegative], 
+	u.[UserName],
+	u.[FirstName],
+	u.[LastName],
+	p.[Name] as 'ProductName',
+	(f.[VoteTotal] - f.[VoteTotalNegative]) as 'Popularity' 
+FROM 	
+	{objectQualifier}DnnForge_FeedbackCenter_Feedback f, {objectQualifier}DnnForge_FeedbackCenter_Product p, {objectQualifier}Users u
+WHERE 
+	f.[ProductID] = p.[ProductID]
+	and
+	f.[UserID] = u.[UserID] 
+	and 
+	f.[ModuleID] = @ModuleID 
+	and
+	(f.[ProductID] = @ProductID or @ProductID = -1)
+	and
+	f.[IsClosed] = @IsClosed
+	and
+	f.[Title] like '%' + @Keywords + '%'
+ORDER BY
+	'Popularity' DESC
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_FeedbackAdd
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_FeedbackAdd
+	@ModuleID int,
+	@TypeID int,
+	@ProductID int,
+	@UserID int,
+	@IsClosed bit,
+	@IsResolved bit,
+	@CreateDate datetime,
+	@Title nvarchar(100),
+	@Details ntext,
+	@VoteTotal int, 
+	@VoteTotalNegative int
+AS
+
+INSERT INTO {objectQualifier}DnnForge_FeedbackCenter_Feedback (
+	[ModuleID],
+	[TypeID],
+	[ProductID],
+	[UserID],
+	[IsClosed],
+	[IsResolved],
+	[CreateDate],
+	[Title],
+	[Details],
+	[VoteTotal], 
+	[VoteTotalNegative]
+) VALUES (
+	@ModuleID,
+	@TypeID,
+	@ProductID,
+	@UserID,
+	@IsClosed,
+	@IsResolved,
+	@CreateDate,
+	@Title,
+	@Details,
+	@VoteTotal,  
+	@VoteTotalNegative 
+)
+
+select SCOPE_IDENTITY()
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_FeedbackUpdate
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_FeedbackUpdate
+	@FeedbackID int, 
+	@ModuleID int, 
+	@TypeID int, 
+	@ProductID int, 
+	@UserID int, 
+	@IsClosed bit, 
+	@IsResolved bit, 
+	@CreateDate datetime, 
+	@Title nvarchar(100), 
+	@Details ntext,
+	@VoteTotal int, 
+	@VoteTotalNegative int 
+AS
+
+UPDATE {objectQualifier}DnnForge_FeedbackCenter_Feedback SET
+	[ModuleID] = @ModuleID,
+	[TypeID] = @TypeID,
+	[ProductID] = @ProductID,
+	[UserID] = @UserID,
+	[IsClosed] = @IsClosed,
+	[IsResolved] = @IsResolved,
+	[CreateDate] = @CreateDate,
+	[Title] = @Title,
+	[Details] = @Details, 
+	[VoteTotal] = @VoteTotal, 
+	[VoteTotalNegative] = @VoteTotalNegative 
+WHERE
+	[FeedbackID] = @FeedbackID
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_VoteGet
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_VoteGet
+	@FeedbackID int,
+	@UserID	int
+AS
+
+SELECT
+	[VoteID],
+	[FeedbackID],
+	[UserID],
+	[CreateDate],
+	[IsPositive] 
+FROM {objectQualifier}DnnForge_FeedbackCenter_Vote
+WHERE
+	[FeedbackID] = @FeedbackID
+	and
+	[UserID] = @UserID
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_VoteAdd
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_VoteAdd
+	@FeedbackID int,
+	@UserID int,
+	@CreateDate datetime,
+	@IsPositive bit 
+AS
+
+INSERT INTO {objectQualifier}DnnForge_FeedbackCenter_Vote (
+	[FeedbackID],
+	[UserID],
+	[CreateDate], 
+	[IsPositive] 
+) VALUES (
+	@FeedbackID,
+	@UserID,
+	@CreateDate,
+	@IsPositive 
+)
+
+select SCOPE_IDENTITY()
+GO

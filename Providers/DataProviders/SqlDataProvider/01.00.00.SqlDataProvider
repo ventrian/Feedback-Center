@@ -1,0 +1,506 @@
+﻿CREATE TABLE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Feedback (
+	[FeedbackID] [int] IDENTITY (1, 1) NOT NULL ,
+	[ModuleID] [int] NOT NULL ,
+	[TypeID] [int] NOT NULL ,
+	[ProductID] [int] NOT NULL ,
+	[UserID] [int] NOT NULL ,
+	[IsClosed] [bit] NOT NULL ,
+	[IsResolved] [bit] NOT NULL ,
+	[CreateDate] [datetime] NOT NULL ,
+	[Title] [nvarchar] (100) NOT NULL ,
+	[Details] [ntext] NOT NULL ,
+	[VoteTotal] [int] NOT NULL 
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+CREATE TABLE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Product (
+	[ProductID] [int] IDENTITY (1, 1) NOT NULL ,
+	[ModuleID] [int] NOT NULL ,
+	[Name] [nvarchar] (100) NOT NULL ,
+	[IsActive] [bit] NOT NULL 
+) ON [PRIMARY]
+GO
+
+CREATE TABLE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Type (
+	[TypeID] [int] IDENTITY (1, 1) NOT NULL ,
+	[Name] [nvarchar] (100) NOT NULL 
+) ON [PRIMARY]
+GO
+
+CREATE TABLE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Comment (
+	[CommentID] [int] IDENTITY (1, 1) NOT NULL ,
+	[FeedbackID] [int] NOT NULL ,
+	[UserID] [int] NOT NULL ,
+	[CreateDate] [datetime] NOT NULL ,
+	[Comment] [ntext] NOT NULL 
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+CREATE TABLE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Tracking (
+	[TrackingID] [int] IDENTITY (1, 1) NOT NULL ,
+	[FeedbackID] [int] NOT NULL ,
+	[UserID] [int] NOT NULL ,
+	[CreateDate] [datetime] NOT NULL 
+) ON [PRIMARY]
+GO
+
+CREATE TABLE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Vote (
+	[VoteID] [int] IDENTITY (1, 1) NOT NULL ,
+	[FeedbackID] [int] NOT NULL ,
+	[UserID] [int] NOT NULL ,
+	[CreateDate] [datetime] NOT NULL 
+) ON [PRIMARY]
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Feedback ADD 
+	CONSTRAINT [PK_{objectQualifier}DnnForge_FeedbackCenter_Feedback] PRIMARY KEY  CLUSTERED 
+	(
+		[FeedbackID]
+	)  ON [PRIMARY] 
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Product ADD 
+	CONSTRAINT [PK_{objectQualifier}DnnForge_FeedbackCenter_Product] PRIMARY KEY  CLUSTERED 
+	(
+		[ProductID]
+	)  ON [PRIMARY] 
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Type ADD 
+	CONSTRAINT [PK_{objectQualifier}DnnForge_FeedbackCenter_Type] PRIMARY KEY  CLUSTERED 
+	(
+		[TypeID]
+	)  ON [PRIMARY] 
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Comment ADD 
+	CONSTRAINT [PK_{objectQualifier}DnnForge_FeedbackCenter_Comment] PRIMARY KEY  CLUSTERED 
+	(
+		[CommentID]
+	)  ON [PRIMARY] 
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Tracking ADD 
+	CONSTRAINT [PK_{objectQualifier}DnnForge_FeedbackCenter_Tracking] PRIMARY KEY  CLUSTERED 
+	(
+		[TrackingID]
+	)  ON [PRIMARY] 
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Vote ADD 
+	CONSTRAINT [PK_{objectQualifier}DnnForge_FeedbackCenter_Vote] PRIMARY KEY  CLUSTERED 
+	(
+		[VoteID]
+	)  ON [PRIMARY] 
+GO
+
+INSERT INTO {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Type([Name]) Values('Suggestion')
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_FeedbackGet
+	@FeedbackID int
+AS
+
+SELECT
+	f.[FeedbackID],
+	f.[ModuleID],
+	f.[TypeID],
+	f.[ProductID],
+	f.[UserID],
+	f.[IsClosed],
+	f.[IsResolved],
+	f.[CreateDate],
+	f.[Title],
+	f.[Details],
+	f.[VoteTotal], 
+	u.[UserName],
+	u.[FirstName],
+	u.[LastName],
+	p.[Name] as 'ProductName' 
+FROM 	
+	{objectQualifier}DnnForge_FeedbackCenter_Feedback f, {objectQualifier}DnnForge_FeedbackCenter_Product p, {objectQualifier}Users u
+WHERE 
+	f.[ProductID] = p.[ProductID]
+	and
+	f.[UserID] = u.[UserID] 
+	and 
+	[FeedbackID] = @FeedbackID
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_FeedbackList
+	@ModuleID int,
+	@ProductID int,
+	@IsClosed bit,
+	@Keywords nvarchar(255) 
+AS
+
+SELECT
+	f.[FeedbackID],
+	f.[ModuleID],
+	f.[TypeID],
+	f.[ProductID],
+	f.[UserID],
+	f.[IsClosed],
+	f.[IsResolved],
+	f.[CreateDate],
+	f.[Title],
+	f.[Details],
+	f.[VoteTotal], 
+	u.[UserName],
+	u.[FirstName],
+	u.[LastName],
+	p.[Name] as 'ProductName' 
+FROM 	
+	{objectQualifier}DnnForge_FeedbackCenter_Feedback f, {objectQualifier}DnnForge_FeedbackCenter_Product p, {objectQualifier}Users u
+WHERE 
+	f.[ProductID] = p.[ProductID]
+	and
+	f.[UserID] = u.[UserID] 
+	and 
+	f.[ModuleID] = @ModuleID 
+	and
+	(f.[ProductID] = @ProductID or @ProductID = -1)
+	and
+	f.[IsClosed] = @IsClosed
+	and
+	f.[Title] like '%' + @Keywords + '%'
+ORDER BY
+	f.[VoteTotal] DESC
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_FeedbackAdd
+	@ModuleID int,
+	@TypeID int,
+	@ProductID int,
+	@UserID int,
+	@IsClosed bit,
+	@IsResolved bit,
+	@CreateDate datetime,
+	@Title nvarchar(100),
+	@Details ntext,
+	@VoteTotal int
+AS
+
+INSERT INTO {objectQualifier}DnnForge_FeedbackCenter_Feedback (
+	[ModuleID],
+	[TypeID],
+	[ProductID],
+	[UserID],
+	[IsClosed],
+	[IsResolved],
+	[CreateDate],
+	[Title],
+	[Details],
+	[VoteTotal]
+) VALUES (
+	@ModuleID,
+	@TypeID,
+	@ProductID,
+	@UserID,
+	@IsClosed,
+	@IsResolved,
+	@CreateDate,
+	@Title,
+	@Details,
+	@VoteTotal 
+)
+
+select SCOPE_IDENTITY()
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_FeedbackUpdate
+	@FeedbackID int, 
+	@ModuleID int, 
+	@TypeID int, 
+	@ProductID int, 
+	@UserID int, 
+	@IsClosed bit, 
+	@IsResolved bit, 
+	@CreateDate datetime, 
+	@Title nvarchar(100), 
+	@Details ntext,
+	@VoteTotal int 
+AS
+
+UPDATE {objectQualifier}DnnForge_FeedbackCenter_Feedback SET
+	[ModuleID] = @ModuleID,
+	[TypeID] = @TypeID,
+	[ProductID] = @ProductID,
+	[UserID] = @UserID,
+	[IsClosed] = @IsClosed,
+	[IsResolved] = @IsResolved,
+	[CreateDate] = @CreateDate,
+	[Title] = @Title,
+	[Details] = @Details, 
+	[VoteTotal] = @VoteTotal 
+WHERE
+	[FeedbackID] = @FeedbackID
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_FeedbackDelete
+	@FeedbackID int
+AS
+
+DELETE FROM {objectQualifier}DnnForge_FeedbackCenter_Vote
+WHERE
+	[FeedbackID] = @FeedbackID
+
+DELETE FROM {objectQualifier}DnnForge_FeedbackCenter_Tracking
+WHERE
+	[FeedbackID] = @FeedbackID
+
+DELETE FROM {objectQualifier}DnnForge_FeedbackCenter_Comment
+WHERE
+	[FeedbackID] = @FeedbackID
+
+DELETE FROM {objectQualifier}DnnForge_FeedbackCenter_Feedback
+WHERE
+	[FeedbackID] = @FeedbackID
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_TypeList
+AS
+
+SELECT
+	[TypeID],
+	[Name]
+FROM {objectQualifier}DnnForge_FeedbackCenter_Type
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_ProductGet
+	@ProductID int
+AS
+
+SELECT
+	[ProductID],
+	[ModuleID],
+	[Name],
+	[IsActive]
+FROM {objectQualifier}DnnForge_FeedbackCenter_Product
+WHERE
+	[ProductID] = @ProductID
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_ProductList
+	@moduleId int,
+	@ShowActiveOnly bit  
+AS
+
+SELECT
+	[ProductID],
+	[ModuleID],
+	[Name],
+	[IsActive]
+FROM {objectQualifier}DnnForge_FeedbackCenter_Product
+WHERE 
+	[ModuleID]=@moduleId 
+	and
+	([IsActive] = @ShowActiveOnly OR [IsActive] = 1)
+ORDER  BY [Name] 
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_ProductAdd
+	@ModuleID int,
+	@Name nvarchar(100),
+	@IsActive bit
+AS
+
+INSERT INTO {objectQualifier}DnnForge_FeedbackCenter_Product (
+	[ModuleID],
+	[Name],
+	[IsActive]
+) VALUES (
+	@ModuleID,
+	@Name,
+	@IsActive
+)
+
+select SCOPE_IDENTITY()
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_ProductUpdate
+	@ProductID int, 
+	@ModuleID int, 
+	@Name nvarchar(100), 
+	@IsActive bit 
+AS
+
+UPDATE {objectQualifier}DnnForge_FeedbackCenter_Product SET
+	[ModuleID] = @ModuleID,
+	[Name] = @Name,
+	[IsActive] = @IsActive
+WHERE
+	[ProductID] = @ProductID
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_ProductDelete
+	@ProductID int
+AS
+
+DELETE FROM {objectQualifier}DnnForge_FeedbackCenter_Tracking
+WHERE FeedbackID in (select FeedbackID from {objectQualifier}DnnForge_FeedbackCenter_Feedback where ProductID = @ProductID)
+
+DELETE FROM {objectQualifier}DnnForge_FeedbackCenter_Vote
+WHERE FeedbackID in (select FeedbackID from {objectQualifier}DnnForge_FeedbackCenter_Feedback where ProductID = @ProductID)
+
+DELETE FROM {objectQualifier}DnnForge_FeedbackCenter_Comment
+WHERE FeedbackID in (select FeedbackID from {objectQualifier}DnnForge_FeedbackCenter_Feedback where ProductID = @ProductID)
+
+DELETE FROM {objectQualifier}DnnForge_FeedbackCenter_Feedback
+WHERE
+	[ProductID] = @ProductID
+
+DELETE FROM {objectQualifier}DnnForge_FeedbackCenter_Product
+WHERE
+	[ProductID] = @ProductID
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_CommentList
+	@FeedbackID int
+AS
+
+SELECT
+	c.[CommentID],
+	c.[FeedbackID],
+	c.[UserID],
+	c.[CreateDate],
+	c.[Comment],
+	u.[Username],
+	u.[FirstName],
+	u.[LastName] 
+FROM 
+	{objectQualifier}DnnForge_FeedbackCenter_Comment c, {objectQualifier}Users u
+WHERE
+	c.[UserID] = u.[UserID]
+	and
+	c.[FeedbackID] = @FeedbackID
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_CommentAdd
+	@FeedbackID int,
+	@UserID int,
+	@CreateDate datetime,
+	@Comment ntext
+AS
+
+INSERT INTO {objectQualifier}DnnForge_FeedbackCenter_Comment (
+	[FeedbackID],
+	[UserID],
+	[CreateDate],
+	[Comment]
+) VALUES (
+	@FeedbackID,
+	@UserID,
+	@CreateDate,
+	@Comment
+)
+
+select SCOPE_IDENTITY()
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_CommentDelete
+	@CommentID int
+AS
+
+DELETE FROM {objectQualifier}DnnForge_FeedbackCenter_Comment
+WHERE
+	[CommentID] = @CommentID
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_VoteGet
+	@FeedbackID int,
+	@UserID	int
+AS
+
+SELECT
+	[VoteID],
+	[FeedbackID],
+	[UserID],
+	[CreateDate]
+FROM {objectQualifier}DnnForge_FeedbackCenter_Vote
+WHERE
+	[FeedbackID] = @FeedbackID
+	and
+	[UserID] = @UserID
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_VoteAdd
+	@FeedbackID int,
+	@UserID int,
+	@CreateDate datetime
+AS
+
+INSERT INTO {objectQualifier}DnnForge_FeedbackCenter_Vote (
+	[FeedbackID],
+	[UserID],
+	[CreateDate]
+) VALUES (
+	@FeedbackID,
+	@UserID,
+	@CreateDate
+)
+
+select SCOPE_IDENTITY()
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_TrackingGet
+	@FeedbackID int,
+	@UserID int
+AS
+
+SELECT
+	[TrackingID],
+	[FeedbackID],
+	[UserID],
+	[CreateDate]
+FROM {objectQualifier}DnnForge_FeedbackCenter_Tracking
+WHERE
+	[FeedbackID] = @FeedbackID
+	and
+	[UserID] = @UserID
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_TrackingAdd
+	@FeedbackID int,
+	@UserID int,
+	@CreateDate datetime
+AS
+
+INSERT INTO {objectQualifier}DnnForge_FeedbackCenter_Tracking (
+	[FeedbackID],
+	[UserID],
+	[CreateDate]
+) VALUES (
+	@FeedbackID,
+	@UserID,
+	@CreateDate
+)
+
+select SCOPE_IDENTITY()
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_TrackingDelete
+	@FeedbackID int,
+	@UserID int
+AS
+
+DELETE FROM {objectQualifier}DnnForge_FeedbackCenter_Tracking
+WHERE
+	[FeedbackID] = @FeedbackID
+	and
+	[UserID] = @UserID
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_TrackingList
+	@FeedbackID int	
+AS
+
+SELECT
+	[TrackingID],
+	[FeedbackID],
+	[UserID],
+	[CreateDate]
+FROM {objectQualifier}DnnForge_FeedbackCenter_Tracking
+WHERE
+	[FeedbackID] = @FeedbackID
+GO

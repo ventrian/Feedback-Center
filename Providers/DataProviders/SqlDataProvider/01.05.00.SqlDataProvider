@@ -1,0 +1,15 @@
+﻿UPDATE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Feedback
+SET ClosedDate = CreateDate
+WHERE IsClosed = 1 and ClosedDate is null 
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_GetStatistics
+	@ModuleID int, 
+	@Period int 
+AS
+
+	SELECT
+		(select count(*) from {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Feedback WHERE ModuleID = @ModuleID and (@Period is null or CreateDate > DateAdd(day, (@Period*-1), GetDate()))) as 'FeedbackCreated',
+		(select count(*) from {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Feedback WHERE ModuleID = @ModuleID and IsClosed = 1 and isResolved = 1 and (@Period is null or ClosedDate > DateAdd(day, (@Period*-1), GetDate()))) as 'FeedbackResolved',
+		(select avg(DATEDIFF(day, createdate, closeddate)) from {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Feedback where closeddate is not null and isResolved = 1 and (@Period is null or ClosedDate > DateAdd(day, (@Period*-1), GetDate()))) as 'AverageTime' 
+GO

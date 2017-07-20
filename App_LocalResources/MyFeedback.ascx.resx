@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<root>
+<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+<xsd:element name="root" msdata:IsDataSet="true">
+<xsd:complexType>
+<xsd:choice maxOccurs="unbounded">
+<xsd:element name="data">
+<xsd:complexType>
+<xsd:sequence>
+<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+</xsd:sequence>
+<xsd:attribute name="name" type="xsd:string" />
+<xsd:attribute name="type" type="xsd:string" />
+<xsd:attribute name="mimetype" type="xsd:string" />
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="resheader">
+<xsd:complexType>
+<xsd:sequence>
+<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+</xsd:sequence>
+<xsd:attribute name="name" type="xsd:string" use="required" />
+</xsd:complexType>
+</xsd:element>
+</xsd:choice>
+</xsd:complexType>
+</xsd:element>
+</xsd:schema>
+<resheader name="ResMimeType">
+<value>text/microsoft-resx</value>
+</resheader>
+<resheader name="Version">
+<value>1.0.0.0</value>
+</resheader>
+<resheader name="Reader">
+<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=1.0.3300.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+</resheader>
+<resheader name="Writer">
+<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=1.0.3300.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+</resheader>
+<data name="AllFeedback.Text">
+<value>All Feedback</value>
+</data>
+<data name="MyFeedback.Text">
+<value>My Feedback</value>
+</data>
+<data name="StatusLabel.Text">
+<value>Status:</value>
+</data>
+<data name="SortBy.Text">
+<value>Sort by</value>
+</data>
+<data name="CreateDate.Text">
+<value>Create Date</value>
+</data>
+<data name="Popularity.Text">
+<value>Popularity</value>
+</data>
+<data name="ClosedDate.Text">
+<value>Closed Date</value>
+</data>
+<data name="LastCommentDate.Text">
+<value>Last Comment Date</value>
+</data>
+<data name="Product.Text">
+<value>Product:</value>
+</data>
+<data name="Keyword.Text">
+<value>Keyword:</value>
+</data>
+<data name="btnSearch.Text">
+<value>Search</value>
+</data>
+<data name="AllProducts.Text">
+<value>-- All Products --</value>
+</data>
+<data name="Closed.Text">
+<value>Closed</value>
+</data>
+<data name="Open.Text">
+<value>Open</value>
+</data>
+<data name="NoResults.Text">
+<value>There are no suggestions matching that criteria.&lt;br&gt;</value>
+</data>
+<data name="Paging.Text">
+<value>&lt;b&gt;{0}&lt;/b&gt;-&lt;b&gt;{1}&lt;/b&gt; of &lt;b&gt;{2}&lt;/b&gt; Results</value>
+</data>
+<data name="Page.Text">
+<value>Page: </value>
+</data>
+<data name="Pages.Text">
+<value>Page(s): </value>
+</data>
+<data name="Date.Text">
+<value>Date</value>
+</data>
+<data name="EditProducts.Text">
+<value>Edit Products</value>
+</data>
+<data name="Votes.Text">
+<value>Votes</value>
+</data>
+<data name="Title.Text">
+<value>Title</value>
+</data>
+<data name="Created.Text">
+<value>Created</value>
+</data>
+<data name="SubmittedBy.Text">
+<value>Submitted By</value>
+</data>
+<data name="Status.Text">
+<value>Status</value>
+</data>
+<data name="ModuleHelp.Text">
+<value>&lt;h1&gt;Feedback Center&lt;/h1&gt;&lt;p&gt;This module allows users of the portal to provide feedback.&lt;/p&gt;</value>
+</data>
+</root>

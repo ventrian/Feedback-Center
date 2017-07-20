@@ -1,0 +1,133 @@
+﻿DROP PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_FeedbackList
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_FeedbackList
+	@ModuleID int,
+	@ProductID int,
+	@IsClosed bit,
+	@Keywords nvarchar(255),
+	@SortOrder int, 
+	@MaxCount int,
+	@UserID int,
+	@TrackingID int  
+AS
+
+if( @MaxCount is not null )
+begin
+	SET ROWCOUNT @MaxCount 
+end
+
+SELECT
+	f.[FeedbackID],
+	f.[ModuleID],
+	f.[TypeID],
+	f.[ProductID],
+	f.[UserID],
+	f.[IsClosed],
+	f.[IsResolved],
+	f.[CreateDate],
+	f.[Title],
+	f.[Details],
+	f.[VoteTotal], 
+	f.[VoteTotalNegative], 
+	f.[ClosedDate], 
+	u.[UserName],
+	u.[FirstName],
+	u.[LastName],
+	u.[DisplayName],
+	p.[Name] as 'ProductName',
+	(f.[VoteTotal] - f.[VoteTotalNegative]) as 'Popularity',
+	(SELECT TOP 1 c.CreateDate FROM {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Comment c WHERE c.FeedbackID = f.FeedbackID ORDER BY c.CreateDate DESC) as 'LastCommentDate'
+FROM 	
+	{databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Feedback f, {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Product p, {databaseOwner}{objectQualifier}Users u
+WHERE 
+	f.[ProductID] = p.[ProductID]
+	and
+	f.[UserID] = u.[UserID] 
+	and 
+	f.[ModuleID] = @ModuleID 
+	and
+	(f.[ProductID] = @ProductID or @ProductID = -1)
+	and
+	f.[IsClosed] = @IsClosed
+	and
+	(@Keywords is null or (f.[Title] like '%' + @Keywords + '%' or f.[Details] like '%' + @Keywords + '%'))
+	and
+	(@UserID is null or u.[UserID] = @UserID) 
+	and
+	(@TrackingID is null or ((SELECT COUNT(*) FROM {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Tracking t where t.FeedbackID = f.FeedbackID and t.UserID = @TrackingID) > 0))
+ORDER BY 
+	CASE 
+		WHEN @SortOrder = 1 THEN (f.[VoteTotal] - f.[VoteTotalNegative]) 
+	END DESC,
+	CASE 
+		WHEN @SortOrder = 2 THEN CreateDate
+	END DESC,
+	CASE 
+		WHEN @SortOrder = 3 THEN ClosedDate
+	END DESC,
+	CASE 
+		WHEN @SortOrder = 4 THEN (SELECT TOP 1 c.CreateDate FROM {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Comment c WHERE c.FeedbackID = f.FeedbackID ORDER BY c.CreateDate DESC)
+	END DESC
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_CommentList
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_CommentList
+	@FeedbackID int
+AS
+
+SELECT
+	c.[CommentID],
+	c.[FeedbackID],
+	c.[UserID],
+	c.[CreateDate],
+	c.[Comment],
+	u.[Username],
+	u.[FirstName],
+	u.[LastName],
+	u.[DisplayName] 
+FROM 
+	{objectQualifier}DnnForge_FeedbackCenter_Comment c, {objectQualifier}Users u
+WHERE
+	c.[UserID] = u.[UserID]
+	and
+	c.[FeedbackID] = @FeedbackID
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_FeedbackGet
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_FeedbackGet
+	@FeedbackID int
+AS
+
+SELECT
+	f.[FeedbackID],
+	f.[ModuleID],
+	f.[TypeID],
+	f.[ProductID],
+	f.[UserID],
+	f.[IsClosed],
+	f.[IsResolved],
+	f.[CreateDate],
+	f.[Title],
+	f.[Details],
+	f.[VoteTotal], 
+	f.[VoteTotalNegative], 
+	f.[ClosedDate],
+	u.[UserName],
+	u.[FirstName],
+	u.[LastName],
+	u.[DisplayName],
+	p.[Name] as 'ProductName' 
+FROM 	
+	{databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Feedback f, {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Product p, {databaseOwner}{objectQualifier}Users u
+WHERE 
+	f.[ProductID] = p.[ProductID]
+	and
+	f.[UserID] = u.[UserID] 
+	and 
+	[FeedbackID] = @FeedbackID
+GO

@@ -1,0 +1,383 @@
+﻿ALTER TABLE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Feedback ADD
+	AnonymousName nvarchar(255) NULL,
+	AnonymousEmail nvarchar(255) NULL,
+	AnonymousUrl nvarchar(255) NULL,
+	IsApproved bit NOT NULL CONSTRAINT DF_{objectQualifier}DnnForge_FeedbackCenter_Feedback_IsApproved DEFAULT 1
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Comment ADD
+	AnonymousName nvarchar(255) NULL,
+	AnonymousEmail nvarchar(255) NULL,
+	AnonymousUrl nvarchar(255) NULL,
+	IsApproved bit NOT NULL CONSTRAINT DF_{objectQualifier}DnnForge_FeedbackCenter_Comment_IsApproved DEFAULT 1
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_FeedbackAdd
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_FeedbackAdd
+	@ModuleID int,
+	@TypeID int,
+	@ProductID int,
+	@UserID int,
+	@IsClosed bit,
+	@IsResolved bit,
+	@CreateDate datetime,
+	@Title nvarchar(100),
+	@Details ntext,
+	@VoteTotal int, 
+	@VoteTotalNegative int,
+	@ClosedDate datetime,
+	@AnonymousName nvarchar(255),
+	@AnonymousEmail nvarchar(255),
+	@AnonymousUrl nvarchar(255),
+	@IsApproved bit 
+AS
+
+INSERT INTO {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Feedback (
+	[ModuleID],
+	[TypeID],
+	[ProductID],
+	[UserID],
+	[IsClosed],
+	[IsResolved],
+	[CreateDate],
+	[Title],
+	[Details],
+	[VoteTotal], 
+	[VoteTotalNegative],
+	[ClosedDate],
+	[AnonymousName],
+	[AnonymousEmail],
+	[AnonymousUrl],
+	[IsApproved] 
+) VALUES (
+	@ModuleID,
+	@TypeID,
+	@ProductID,
+	@UserID,
+	@IsClosed,
+	@IsResolved,
+	@CreateDate,
+	@Title,
+	@Details,
+	@VoteTotal,  
+	@VoteTotalNegative,
+	@ClosedDate,
+	@AnonymousName,
+	@AnonymousEmail,
+	@AnonymousUrl,
+	@IsApproved    
+)
+
+select SCOPE_IDENTITY()
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_FeedbackGet
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_FeedbackGet
+	@FeedbackID int
+AS
+
+SELECT
+	f.[FeedbackID],
+	f.[ModuleID],
+	f.[TypeID],
+	f.[ProductID],
+	f.[UserID],
+	f.[IsClosed],
+	f.[IsResolved],
+	f.[CreateDate],
+	f.[Title],
+	f.[Details],
+	f.[VoteTotal], 
+	f.[VoteTotalNegative], 
+	f.[ClosedDate],
+	f.[AnonymousName],
+	f.[AnonymousEmail],
+	f.[AnonymousUrl],
+	f.[IsApproved],
+	u.[UserName],
+	u.[FirstName],
+	u.[LastName],
+	u.[DisplayName],
+	p.[Name] as 'ProductName' 
+FROM 	
+	{databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Feedback f INNER JOIN
+        {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Product p ON f.[ProductID] = p.[ProductID] LEFT OUTER JOIN
+        {databaseOwner}{objectQualifier}Users u ON f.[UserID] = u.[UserID] 
+WHERE 
+	[FeedbackID] = @FeedbackID
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_FeedbackList
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_FeedbackList
+	@ModuleID int,
+	@ProductID int,
+	@IsClosed bit,
+	@Keywords nvarchar(255),
+	@SortOrder int, 
+	@MaxCount int,
+	@UserID int,
+	@TrackingID int,
+	@IsApproved bit   
+AS
+
+if( @MaxCount is not null )
+begin
+	SET ROWCOUNT @MaxCount 
+end
+
+SELECT
+	f.[FeedbackID],
+	f.[ModuleID],
+	f.[TypeID],
+	f.[ProductID],
+	f.[UserID],
+	f.[IsClosed],
+	f.[IsResolved],
+	f.[CreateDate],
+	f.[Title],
+	f.[Details],
+	f.[VoteTotal], 
+	f.[VoteTotalNegative], 
+	f.[ClosedDate], 
+	f.[AnonymousName],
+	f.[AnonymousEmail],
+	f.[AnonymousUrl],
+	f.[IsApproved], 
+	u.[UserName],
+	u.[FirstName],
+	u.[LastName],
+	u.[DisplayName],
+	p.[Name] as 'ProductName',
+	(f.[VoteTotal] - f.[VoteTotalNegative]) as 'Popularity',
+	(SELECT TOP 1 c.CreateDate FROM {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Comment c WHERE c.FeedbackID = f.FeedbackID AND c.CommentID = 1 ORDER BY c.CreateDate DESC) as 'LastCommentDate'
+FROM 	
+	{databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Feedback f INNER JOIN
+        {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Product p ON f.[ProductID] = p.[ProductID] LEFT OUTER JOIN
+        {databaseOwner}{objectQualifier}Users u ON f.[UserID] = u.[UserID] 
+WHERE 
+	f.[ModuleID] = @ModuleID 
+	and
+	(f.[ProductID] = @ProductID or @ProductID = -1)
+	and
+	f.[IsClosed] = @IsClosed
+	and
+	f.[IsApproved] = @IsApproved
+	and
+	(@Keywords is null or (f.[Title] like '%' + @Keywords + '%' or f.[Details] like '%' + @Keywords + '%'))
+	and
+	(@UserID is null or u.[UserID] = @UserID) 
+	and
+	(@TrackingID is null or ((SELECT COUNT(*) FROM {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Tracking t where t.FeedbackID = f.FeedbackID and t.UserID = @TrackingID) > 0))
+ORDER BY 
+	CASE 
+		WHEN @SortOrder = 1 THEN (f.[VoteTotal] - f.[VoteTotalNegative]) 
+	END DESC,
+	CASE 
+		WHEN @SortOrder = 2 THEN CreateDate
+	END DESC,
+	CASE 
+		WHEN @SortOrder = 3 THEN ClosedDate
+	END DESC,
+	CASE 
+		WHEN @SortOrder = 4 THEN (SELECT TOP 1 c.CreateDate FROM {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Comment c WHERE c.FeedbackID = f.FeedbackID ORDER BY c.CreateDate DESC)
+	END DESC
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_FeedbackUpdate
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_FeedbackUpdate
+	@FeedbackID int, 
+	@ModuleID int, 
+	@TypeID int, 
+	@ProductID int, 
+	@UserID int, 
+	@IsClosed bit, 
+	@IsResolved bit, 
+	@CreateDate datetime, 
+	@Title nvarchar(100), 
+	@Details ntext,
+	@VoteTotal int, 
+	@VoteTotalNegative int,
+	@ClosedDate datetime,
+	@AnonymousName nvarchar(255),
+	@AnonymousEmail nvarchar(255),
+	@AnonymousUrl nvarchar(255),
+	@IsApproved bit   
+AS
+
+UPDATE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Feedback SET
+	[ModuleID] = @ModuleID,
+	[TypeID] = @TypeID,
+	[ProductID] = @ProductID,
+	[UserID] = @UserID,
+	[IsClosed] = @IsClosed,
+	[IsResolved] = @IsResolved,
+	[CreateDate] = @CreateDate,
+	[Title] = @Title,
+	[Details] = @Details, 
+	[VoteTotal] = @VoteTotal, 
+	[VoteTotalNegative] = @VoteTotalNegative,
+	[ClosedDate] = @ClosedDate,
+	[AnonymousName] = @AnonymousName,
+	[AnonymousEmail] = @AnonymousEmail,
+	[AnonymousUrl] = @AnonymousUrl,
+	[IsApproved] = @IsApproved  
+WHERE
+	[FeedbackID] = @FeedbackID
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_CommentAdd
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_CommentAdd
+	@FeedbackID int,
+	@UserID int,
+	@CreateDate datetime,
+	@Comment ntext,
+	@AnonymousName nvarchar(255),
+	@AnonymousEmail nvarchar(255),
+	@AnonymousUrl nvarchar(255),
+	@IsApproved bit   
+AS
+
+INSERT INTO {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Comment (
+	[FeedbackID],
+	[UserID],
+	[CreateDate],
+	[Comment],
+	[AnonymousName],
+	[AnonymousEmail],
+	[AnonymousUrl],
+	[IsApproved] 
+) VALUES (
+	@FeedbackID,
+	@UserID,
+	@CreateDate,
+	@Comment,
+	@AnonymousName,
+	@AnonymousEmail,
+	@AnonymousUrl,
+	@IsApproved  
+)
+
+select SCOPE_IDENTITY()
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_CommentList
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_CommentList
+	@ModuleID int,
+	@FeedbackID int,
+	@IsApproved bit 
+AS
+
+SELECT
+	c.[CommentID],
+	c.[FeedbackID],
+	c.[UserID],
+	c.[CreateDate],
+	c.[Comment], 
+	c.[AnonymousName],
+	c.[AnonymousEmail],
+	c.[AnonymousUrl],
+	c.[IsApproved],
+	u.[Username],
+	u.[FirstName],
+	u.[LastName],
+	u.[DisplayName] 
+FROM 
+	{databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Comment c INNER JOIN 
+		{databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Feedback f ON c.feedbackID = f.feedbackID LEFT OUTER JOIN 
+		{databaseOwner}{objectQualifier}Users u ON c.[UserID] = u.[UserID]
+WHERE
+	f.ModuleID = @ModuleID
+	AND
+	(@FeedbackID IS NULL OR c.[FeedbackID] = @FeedbackID)
+	AND
+	c.[IsApproved] = @IsApproved
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_CommentUpdate
+	@CommentID int, 
+	@FeedbackID int,
+	@UserID int,
+	@CreateDate datetime,
+	@Comment ntext,
+	@AnonymousName nvarchar(255),
+	@AnonymousEmail nvarchar(255),
+	@AnonymousUrl nvarchar(255),
+	@IsApproved bit   
+AS
+
+UPDATE 
+	{databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Comment
+SET
+	[FeedbackID] = @FeedbackID,
+	[UserID] = @UserID,
+	[CreateDate] = @CreateDate,
+	[Comment] = @Comment,
+	[AnonymousName] = @AnonymousName,
+	[AnonymousEmail] = @AnonymousEmail,
+	[AnonymousUrl] = @AnonymousUrl,
+	[IsApproved] = @IsApproved
+WHERE
+	[CommentID] = @CommentID
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_CommentGet
+	@CommentID int
+AS
+
+SELECT
+	c.[CommentID],
+	c.[FeedbackID],
+	c.[UserID],
+	c.[CreateDate],
+	c.[Comment], 
+	c.[AnonymousName],
+	c.[AnonymousEmail],
+	c.[AnonymousUrl],
+	c.[IsApproved],
+	u.[Username],
+	u.[FirstName],
+	u.[LastName],
+	u.[DisplayName] 
+FROM 
+	{databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Comment c LEFT OUTER JOIN 
+		{databaseOwner}{objectQualifier}Users u ON c.[UserID] = u.[UserID]
+WHERE
+	c.[CommentID] = @CommentID
+GO
+
+DROP PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_VoteAdd
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_VoteAdd
+	@FeedbackID int,
+	@UserID int,
+	@CreateDate datetime,
+	@IsPositive bit
+AS
+
+INSERT INTO {databaseOwner}{objectQualifier}DnnForge_FeedbackCenter_Vote (
+	[FeedbackID],
+	[UserID],
+	[CreateDate], 
+	[IsPositive]
+) VALUES (
+	@FeedbackID,
+	@UserID,
+	@CreateDate,
+	@IsPositive
+)
+
+select SCOPE_IDENTITY()
+GO
